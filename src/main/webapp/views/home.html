@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<!--${...}: chèn layout-->
+<header th:insert="~{layout::header}"></header>
+<!--  ${...}: lấy giá trị biến  -->
+<div>
+    <h3 th:text="${rs}"></h3>
+    <p th:text="${ra}"></p>
+    <!--  Nối chuỗi với + và ||  -->
+    <h3 th:text="${'Công ty '+rs}"></h3>
+    <p th:text="|Công ty ${ra}|"></p>
+</div>
+<!--*{...}: lấy giá trị thuộc tính của đối tượng-->
+<div th:object="${student}">
+    <p th:text="${student.studentId}"></p>
+    <p th:text="*{studentName}"></p>
+    <p th:text="|Tuổi: *{age}|"></p>
+</div>
+<!--#{...}: lấy giá trị message-->
+<div>
+    <h3 th:text="#{message.title}"></h3>
+    <p th:text="#{message.content}"></p>
+</div>
+<!--@{...}: lấy đường dẫn-->
+<table border="1">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>Student ID</th>
+        <th>Student Name</th>
+        <th>Age</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student,loop:${listStudents}">
+        <td th:text="${loop.index+1}"></td>
+        <td th:text="${student.studentId}"></td>
+        <td th:text="${student.studentName}"></td>
+        <td th:text="${student.age}"></td>
+        <!--th:switch, th:case-->
+        <td th:switch="${student.status}">
+            <!--th:if câu lệnh điều kiện-->
+<!--            <span th:if="${student.status==true}">Active</span>-->
+<!--            <span th:unless="${student.status==true}">Inactive</span>-->
+            <span th:case="true">Active</span>
+            <span th:case="false">Inactive</span>
+            <span th:case="*">Other</span>
+        </td>
+        <td>
+            <a th:href="@{/edit(studentId=${student.studentId})}">Edit</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<!--${...}: chèn layout-->
+<footer th:insert="~{layout::footer}"></footer>
+
+</body>
+</html>
